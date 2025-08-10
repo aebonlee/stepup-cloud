@@ -157,6 +157,37 @@ npm start
 ### awards_activities
 - 입상/활동 기록 (날짜, 제목, 유형, 과목, 시간)
 
+ ## 🆓 무료 백엔드 서비스 옵션
+
+ ** 1. Render (추천)** ⭐
+
+  - 무료 플랜: 750시간/월 (충분함)
+  - 데이터베이스: PostgreSQL 무료 제공
+  - 장점: 쉬운 설정, 자동 배포, SSL 지원
+  - 단점: Cold start 지연
+
+ ** 2. Railway**
+
+  - 무료 플랜: $5 크레딧/월
+  - 데이터베이스: PostgreSQL, MySQL 지원
+  - 장점: 빠른 성능, 좋은 DX
+
+  **3. Vercel + PlanetScale**
+
+  - Vercel: 서버리스 함수 무료
+  - PlanetScale: MySQL 호환 무료 DB
+  - 장점: 글로벌 CDN, 빠른 성능
+
+ ** 4. Supabase (추천) ⭐⭐
+**
+  - 무료 플랜: PostgreSQL + API + Auth
+  - 장점: 완전한 BaaS, 실시간 기능
+  - 특징: Firebase 대안, RESTful API 자동 생성
+
+  Render를 사용해서 백엔드를 배포하고 PostgreSQL 연동하겠습니다!
+  
+  ---
+
 ## 🎨 디자인 특징
 
 - **파스텔톤 컬러**: 아이보리, 하늘, 민트 등 따뜻하고 안정적인 색상
