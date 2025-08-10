@@ -281,7 +281,7 @@ process.on('SIGINT', () => {
 const server = app.listen(PORT, () => {
   console.log(`🚀 스텝업클라우드 API 서버가 포트 ${PORT}에서 실행 중입니다.`);
   console.log(`📊 헬스 체크: http://localhost:${PORT}/api/health`);
-  console.log(`🗄️  데이터베이스: ${dbPath}`);
+  console.log(`🗄️  데이터베이스: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'} 연결됨`);
 });
 
 server.on('error', (err) => {
