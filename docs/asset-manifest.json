@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/stepup-cloud/static/css/main.45fac6ac.css",
+    "main.js": "/stepup-cloud/static/js/main.b9fdb68f.js",
+    "static/js/453.670e15c7.chunk.js": "/stepup-cloud/static/js/453.670e15c7.chunk.js",
+    "index.html": "/stepup-cloud/index.html",
+    "main.45fac6ac.css.map": "/stepup-cloud/static/css/main.45fac6ac.css.map",
+    "main.b9fdb68f.js.map": "/stepup-cloud/static/js/main.b9fdb68f.js.map",
+    "453.670e15c7.chunk.js.map": "/stepup-cloud/static/js/453.670e15c7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.45fac6ac.css",
+    "static/js/main.b9fdb68f.js"
+  ]
+}
