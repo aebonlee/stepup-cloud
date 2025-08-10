@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 import { Doughnut, Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -55,10 +55,7 @@ const ReadingPage: React.FC = () => {
 
   const fetchRecords = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/reading-records', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/api/reading-records');
       setRecords(response.data);
     } catch (error) {
       console.error('독서 기록을 불러오는데 실패했습니다:', error);
@@ -67,10 +64,7 @@ const ReadingPage: React.FC = () => {
 
   const fetchStats = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/stats/reading', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/api/stats/reading');
       setStats(response.data);
     } catch (error) {
       console.error('독서 통계를 불러오는데 실패했습니다:', error);
@@ -89,10 +83,7 @@ const ReadingPage: React.FC = () => {
     setMessage('');
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/reading-records', formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.post('/api/reading-records', formData);
       
       setMessage('독서 기록이 저장되었습니다.');
       setFormData({

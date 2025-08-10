@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 
 interface AuthProps {
   onLogin: (token: string, user: any) => void;
@@ -24,15 +24,41 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     e.preventDefault();
     setError('');
 
+    // 입력 검증
+    if (!formData.email || !formData.password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    if (!isValidEmail(formData.email)) {
+      setError('올바른 이메일 형식을 입력해주세요.');
+      return;
+    }
+
+    if (formData.password.length < 4) {
+      setError('비밀번호는 최소 4자 이상이어야 합니다.');
+      return;
+    }
+
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      const response = await axios.post(`http://localhost:5000${endpoint}`, formData);
+      const response = await api.post(endpoint, formData);
       
       localStorage.setItem('token', response.data.token);
       onLogin(response.data.token, response.data.user);
     } catch (error: any) {
-      setError(error.response?.data?.error || '오류가 발생했습니다.');
+      console.error('Auth error:', error);
+      if (error.code === 'ECONNREFUSED') {
+        setError('서버에 연결할 수 없습니다. 백엔드 서버가 실행 중인지 확인해주세요.');
+      } else {
+        setError(error.response?.data?.error || '오류가 발생했습니다.');
+      }
     }
+  };
+
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   return (

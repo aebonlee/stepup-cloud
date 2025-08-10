@@ -6,12 +6,34 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
+const JWT_SECRET = process.env.JWT_SECRET || 'stepup-cloud-secret-key-2024';
 
-app.use(cors());
-app.use(express.json());
+// CORS 설정을 더 구체적으로
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://aebonlee.github.io'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-const db = new sqlite3.Database('stepup_cloud.db');
+app.use(express.json({ limit: '10mb' }));
+
+// 요청 로깅 미들웨어
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
+
+// 데이터베이스 연결
+const dbPath = path.join(__dirname, 'stepup_cloud.db');
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('데이터베이스 연결 오류:', err.message);
+    process.exit(1);
+  }
+  console.log('SQLite 데이터베이스에 연결되었습니다.');
+});
 
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS users (
@@ -64,7 +86,7 @@ function authenticateToken(req, res, next) {
     return res.sendStatus(401);
   }
 
-  jwt.verify(token, 'your-secret-key', (err, user) => {
+  jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
     next();
@@ -85,7 +107,7 @@ app.post('/api/auth/register', async (req, res) => {
           return res.status(400).json({ error: '사용자 등록에 실패했습니다.' });
         }
         
-        const token = jwt.sign({ id: this.lastID, email }, 'your-secret-key');
+        const token = jwt.sign({ id: this.lastID, email }, JWT_SECRET, { expiresIn: '24h' });
         res.json({ token, user: { id: this.lastID, email } });
       }
     );
@@ -114,7 +136,7 @@ app.post('/api/auth/login', (req, res) => {
         return res.status(400).json({ error: '비밀번호가 틀렸습니다.' });
       }
 
-      const token = jwt.sign({ id: user.id, email: user.email }, 'your-secret-key');
+      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '24h' });
       res.json({ token, user: { id: user.id, email: user.email } });
     }
   );
@@ -256,6 +278,53 @@ app.get('/api/stats/reading', authenticateToken, (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`);
+// 헬스 체크 엔드포인트
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: '스텝업클라우드 API 서버가 정상 작동 중입니다.',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// 404 핸들러
+app.use('*', (req, res) => {
+  res.status(404).json({ error: '요청한 API 엔드포인트를 찾을 수 없습니다.' });
+});
+
+// 전역 오류 핸들러
+app.use((error, req, res, next) => {
+  console.error('서버 오류:', error);
+  res.status(500).json({ 
+    error: '내부 서버 오류가 발생했습니다.',
+    message: process.env.NODE_ENV === 'development' ? error.message : '서버 오류'
+  });
+});
+
+// 데이터베이스 종료 처리
+process.on('SIGINT', () => {
+  console.log('\n서버를 종료합니다...');
+  db.close((err) => {
+    if (err) {
+      console.error('데이터베이스 종료 오류:', err.message);
+    } else {
+      console.log('데이터베이스 연결이 종료되었습니다.');
+    }
+    process.exit(0);
+  });
+});
+
+const server = app.listen(PORT, () => {
+  console.log(`🚀 스텝업클라우드 API 서버가 포트 ${PORT}에서 실행 중입니다.`);
+  console.log(`📊 헬스 체크: http://localhost:${PORT}/api/health`);
+  console.log(`🗄️  데이터베이스: ${dbPath}`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ 포트 ${PORT}이 이미 사용 중입니다. 다른 포트를 사용해주세요.`);
+  } else {
+    console.error('서버 시작 오류:', err);
+  }
+  process.exit(1);
 });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -53,10 +53,7 @@ const ActivitiesPage: React.FC = () => {
 
   const fetchActivities = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/awards-activities', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/api/awards-activities');
       setActivities(response.data);
     } catch (error) {
       console.error('활동/입상 기록을 불러오는데 실패했습니다:', error);
@@ -75,16 +72,10 @@ const ActivitiesPage: React.FC = () => {
     setMessage('');
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/awards-activities', 
-        {
-          ...formData,
-          hours: formData.hours ? parseInt(formData.hours) : null
-        }, 
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      await api.post('/api/awards-activities', {
+        ...formData,
+        hours: formData.hours ? parseInt(formData.hours) : null
+      });
       
       setMessage('기록이 저장되었습니다.');
       setFormData({

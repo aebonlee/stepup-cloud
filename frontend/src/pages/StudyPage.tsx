@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -52,10 +52,7 @@ const StudyPage: React.FC = () => {
 
   const fetchRecords = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/study-records', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/api/study-records');
       setRecords(response.data);
     } catch (error) {
       console.error('학습 기록을 불러오는데 실패했습니다:', error);
@@ -64,10 +61,7 @@ const StudyPage: React.FC = () => {
 
   const fetchStats = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/stats/study', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/api/stats/study');
       setStats(response.data);
     } catch (error) {
       console.error('통계를 불러오는데 실패했습니다:', error);
@@ -86,16 +80,10 @@ const StudyPage: React.FC = () => {
     setMessage('');
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/study-records', 
-        {
-          ...formData,
-          minutes: parseInt(formData.minutes)
-        }, 
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      await api.post('/api/study-records', {
+        ...formData,
+        minutes: parseInt(formData.minutes)
+      });
       
       setMessage('학습 기록이 저장되었습니다.');
       setFormData({

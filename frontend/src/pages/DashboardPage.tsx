@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -50,13 +50,10 @@ const DashboardPage: React.FC = () => {
 
   const fetchAllStats = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = { Authorization: `Bearer ${token}` };
-
       const [studyResponse, readingResponse, activitiesResponse] = await Promise.all([
-        axios.get('http://localhost:5000/api/stats/study', { headers }),
-        axios.get('http://localhost:5000/api/stats/reading', { headers }),
-        axios.get('http://localhost:5000/api/awards-activities', { headers })
+        api.get('/api/stats/study'),
+        api.get('/api/stats/reading'),
+        api.get('/api/awards-activities')
       ]);
 
       setStudyStats(studyResponse.data);
