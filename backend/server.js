@@ -10,8 +10,23 @@ const PORT = process.env.PORT || 5002;
 const JWT_SECRET = process.env.JWT_SECRET || 'stepup-cloud-secret-key-2024';
 
 // CORS 설정을 더 구체적으로
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001', 
+  'http://localhost:3002',
+  'http://localhost:3003',
+  'https://aebonlee.github.io',
+  'https://stepup-cloud.vercel.app'
+];
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'https://aebonlee.github.io'],
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']

@@ -172,31 +172,31 @@ npm start
 
 ## 🚀 배포
 
-### GitHub Pages 자동 배포
+### 자동 배포 시스템
 
-이 프로젝트는 GitHub Actions를 통해 자동으로 GitHub Pages에 배포됩니다.
+이 프로젝트는 GitHub Actions를 통해 프론트엔드와 백엔드를 각각 자동 배포합니다:
 
-1. **GitHub 저장소 생성**
-```bash
-# 로컬 저장소에서 GitHub에 푸시
-git add .
-git commit -m "Initial commit: StepUp Cloud 학습관리 서비스"
-git branch -M main
-git remote add origin https://github.com/aebonlee/stepup-cloud.git
-git push -u origin main
-```
+- **프론트엔드**: GitHub Pages (https://aebonlee.github.io/stepup-cloud)
+- **백엔드**: Railway (https://stepup-cloud-backend.up.railway.app)
 
-2. **GitHub Pages 설정**
-- GitHub 저장소 → Settings → Pages
+#### 배포 과정:
+1. `main` 브랜치에 푸시하면 자동으로 배포 시작
+2. 프론트엔드는 GitHub Pages에 배포
+3. 백엔드는 Railway에 배포
+4. API 연동은 자동으로 프로덕션 URL로 설정
+
+#### Railway 백엔드 설정:
+1. Railway 계정 생성 (https://railway.app)
+2. GitHub 저장소 연결
+3. 환경변수 설정:
+   - `JWT_SECRET`: 강력한 비밀 키
+   - `NODE_ENV`: production
+4. 자동 배포 활성화
+
+#### GitHub Pages 설정:
+- Repository → Settings → Pages
 - Source: "GitHub Actions" 선택
-- `main` 브랜치에 푸시하면 자동 배포
-
-3. **수동 배포 (선택사항)**
-```bash
-# 프론트엔드만 GitHub Pages에 배포
-cd frontend
-npm run deploy
-```
+- Custom domain: aebonlee.github.io (자동 설정됨)
 
 ### 로컬 프로덕션 빌드
 
