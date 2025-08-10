@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const path = require('path');
+const { db, initializeDatabase } = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 5002;
@@ -16,7 +15,7 @@ const allowedOrigins = [
   'http://localhost:3002',
   'http://localhost:3003',
   'https://aebonlee.github.io',
-  'https://stepup-cloud.vercel.app'
+  'https://stepup-cloud-backend.onrender.com'
 ];
 
 app.use(cors({
@@ -40,58 +39,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// 데이터베이스 연결
-const dbPath = path.join(__dirname, 'stepup_cloud.db');
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('데이터베이스 연결 오류:', err.message);
-    process.exit(1);
-  }
-  console.log('SQLite 데이터베이스에 연결되었습니다.');
-});
-
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )`);
-
-  db.run(`CREATE TABLE IF NOT EXISTS study_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    date TEXT NOT NULL,
-    subject TEXT NOT NULL,
-    book TEXT,
-    minutes INTEGER NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-  )`);
-
-  db.run(`CREATE TABLE IF NOT EXISTS reading_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    date TEXT NOT NULL,
-    book_title TEXT NOT NULL,
-    review TEXT,
-    category TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-  )`);
-
-  db.run(`CREATE TABLE IF NOT EXISTS awards_activities (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    date TEXT NOT NULL,
-    title TEXT NOT NULL,
-    type TEXT NOT NULL,
-    subject TEXT,
-    hours INTEGER,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-  )`);
-});
+// 데이터베이스 초기화
+initializeDatabase();
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];

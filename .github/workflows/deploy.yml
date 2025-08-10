@@ -33,7 +33,7 @@ jobs:
     - name: Build with production API URL
       run: |
         cd frontend
-        export REACT_APP_API_URL="https://stepup-cloud-backend.up.railway.app"
+        export REACT_APP_API_URL="https://stepup-cloud-backend.onrender.com"
         npm run build
         
     - name: Add custom domain and 404 handling
@@ -56,14 +56,14 @@ jobs:
 
   deploy-backend:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && vars.ENABLE_RAILWAY_DEPLOY == 'true'
+    if: github.ref == 'refs/heads/main'
     
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       
-    - name: Deploy to Railway
-      uses: railwayapp/railway-deploy@v1.0.8
+    - name: Deploy to Render
+      uses: johnbeynon/render-deploy-action@v0.0.8
       with:
-        service: stepup-cloud-backend
-        railway_token: ${{ secrets.RAILWAY_TOKEN }}
+        service-id: ${{ secrets.RENDER_SERVICE_ID }}
+        api-key: ${{ secrets.RENDER_API_KEY }}
