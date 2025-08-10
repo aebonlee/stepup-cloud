@@ -6,12 +6,12 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5002;
 const JWT_SECRET = process.env.JWT_SECRET || 'stepup-cloud-secret-key-2024';
 
 // CORS 설정을 더 구체적으로
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://aebonlee.github.io'],
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'https://aebonlee.github.io'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
