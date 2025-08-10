@@ -1,13 +1,13 @@
 # 🚀 스텝업클라우드 (StepUp Cloud)
 
-[![Deploy to GitHub Pages](https://github.com/yourusername/stepup-cloud/actions/workflows/deploy.yml/badge.svg)](https://github.com/yourusername/stepup-cloud/actions/workflows/deploy.yml)
+[![Deploy to GitHub Pages](https://github.com/aebonlee/stepup-cloud/actions/workflows/deploy.yml/badge.svg)](https://github.com/aebonlee/stepup-cloud/actions/workflows/deploy.yml)
 [![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18-green.svg)](https://nodejs.org/)
 
 학생의 학습 루틴, 독서, 활동 등의 데이터를 기록·시각화하여, 학부모와 함께 자기주도 학습의 방향을 설계하고 성장을 지원하는 협력형 학습관리 서비스입니다.
 
-🌐 **[라이브 데모 보기](https://yourusername.github.io/stepup-cloud)**
+🌐 **[라이브 데모 보기](https://aebonlee.github.io/stepup-cloud)**
 
 ## 🎯 주요 기능
 
@@ -182,7 +182,7 @@ npm start
 git add .
 git commit -m "Initial commit: StepUp Cloud 학습관리 서비스"
 git branch -M main
-git remote add origin https://github.com/yourusername/stepup-cloud.git
+git remote add origin https://github.com/aebonlee/stepup-cloud.git
 git push -u origin main
 ```
 
