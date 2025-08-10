@@ -42,10 +42,10 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-sky-pastel-50 via-cream-50 to-mint-pastel-50">
         <Navigation user={user} onLogout={handleLogout} />
         
-        <main className="min-h-screen">
+        <main className="min-h-screen pb-20">
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/study" element={<StudyPage />} />
@@ -55,11 +55,24 @@ function App() {
           </Routes>
         </main>
 
-        <footer className="bg-white border-t mt-16">
-          <div className="max-w-7xl mx-auto py-6 px-4">
+        <footer className="bg-white/80 backdrop-blur-sm border-t border-gray-100 mt-16">
+          <div className="max-w-7xl mx-auto py-8 px-4">
             <div className="text-center text-gray-600">
+              <div className="flex items-center justify-center space-x-2 mb-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-sky-pastel-400 to-mint-pastel-400 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-sm">📚</span>
+                </div>
+                <span className="text-lg font-bold bg-gradient-to-r from-sky-pastel-600 to-mint-pastel-600 bg-clip-text text-transparent">
+                  스텝업클라우드
+                </span>
+              </div>
               <p className="text-sm">© 2024 스텝업클라우드. 모든 권리 보유.</p>
-              <p className="text-xs mt-2">학습 성장을 위한 협력형 학습관리 서비스</p>
+              <p className="text-xs mt-2 text-gray-500">학습 성장을 위한 협력형 학습관리 서비스</p>
+              <div className="flex items-center justify-center space-x-4 mt-4 text-xs text-gray-400">
+                <span>✨ Made with React & Tailwind</span>
+                <span>•</span>
+                <span>🚀 Powered by AI</span>
+              </div>
             </div>
           </div>
         </footer>

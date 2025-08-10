@@ -63,3 +63,35 @@ code {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
+
+/* 글래스 효과 */
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* 그라데이션 텍스트 */
+.gradient-text {
+  background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 페이드 인 애니메이션 */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease-in-out;
+}
+
+/* 부드러운 스크롤 */
+html {
+  scroll-behavior: smooth;
+}
