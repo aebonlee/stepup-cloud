@@ -223,8 +223,8 @@ DB_PATH=./stepup_cloud.db
 ## 📞 지원
 
 문의사항이 있으시면 다음으로 연락해주세요:
-- 이메일: support@stepupcloud.com
-- 웹사이트: https://stepupcloud.com
+- 이메일: aebon@naver.com
+- 웹사이트: https://aebonlee.github.io/stepup-cloud/
 
 ## 📄 라이센스
 
