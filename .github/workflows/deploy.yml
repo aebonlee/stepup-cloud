@@ -41,13 +41,18 @@ jobs:
         echo "aebonlee.github.io" > ./frontend/build/CNAME
         cp ./frontend/build/index.html ./frontend/build/404.html
         
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      if: github.ref == 'refs/heads/main'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./frontend/build
-        cname: aebonlee.github.io
+    - name: Copy to docs folder for GitHub Pages
+      run: |
+        rm -rf docs
+        cp -r ./frontend/build docs
+        
+    - name: Commit and push to main branch
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add docs
+        git commit -m "🚀 Deploy: Update GitHub Pages (docs folder)" -a || echo "No changes to commit"
+        git push
 
   deploy-backend:
     runs-on: ubuntu-latest
