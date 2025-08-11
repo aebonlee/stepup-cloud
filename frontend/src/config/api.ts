@@ -3,7 +3,7 @@ import axios from 'axios';
 // API 기본 URL 설정
 const API_BASE_URL = process.env.REACT_APP_API_URL || 
   (process.env.NODE_ENV === 'production' 
-    ? 'https://stepup-cloud-backend.up.railway.app'
+    ? 'https://stepup-cloud-uh79.onrender.com'
     : 'http://localhost:5002');
 
 // Axios 인스턴스 생성

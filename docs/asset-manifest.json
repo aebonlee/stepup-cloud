@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/stepup-cloud/static/css/main.bc9b95eb.css",
-    "main.js": "/stepup-cloud/static/js/main.686289e5.js",
+    "main.js": "/stepup-cloud/static/js/main.d9138e87.js",
     "static/js/206.ed2f3d44.chunk.js": "/stepup-cloud/static/js/206.ed2f3d44.chunk.js",
     "index.html": "/stepup-cloud/index.html"
   },
   "entrypoints": [
     "static/css/main.bc9b95eb.css",
-    "static/js/main.686289e5.js"
+    "static/js/main.d9138e87.js"
   ]
 }
