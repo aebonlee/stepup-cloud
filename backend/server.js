@@ -15,14 +15,22 @@ const allowedOrigins = [
   'http://localhost:3002',
   'http://localhost:3003',
   'https://aebonlee.github.io',
-  'https://stepup-cloud-backend.onrender.com'
+  'https://stepup-cloud-backend.onrender.com',
+  'https://stepup-cloud-uh79.onrender.com'
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
+    // 개발 환경이나 허용된 도메인인 경우 허용
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
-    } else {
+    } 
+    // GitHub Pages 도메인 체크 (aebonlee.github.io 및 서브 경로)
+    else if (origin && origin.includes('aebonlee.github.io')) {
+      callback(null, true);
+    }
+    else {
+      console.log('🚫 CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
