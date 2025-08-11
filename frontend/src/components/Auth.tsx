@@ -153,6 +153,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
               value={formData.email}
               onChange={handleChange}
               required
+              autoComplete="email"
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-pastel-400 focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white"
               placeholder="이메일을 입력하세요"
             />
@@ -169,6 +170,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
               value={formData.password}
               onChange={handleChange}
               required
+              autoComplete={isLogin ? "current-password" : "new-password"}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-pastel-400 focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white"
               placeholder="비밀번호를 입력하세요"
             />
