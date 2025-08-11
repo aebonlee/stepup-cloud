@@ -21,12 +21,15 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function(origin, callback) {
+    console.log('🔍 Incoming request from origin:', origin);
     // 개발 환경이나 허용된 도메인인 경우 허용
     if (!origin || allowedOrigins.includes(origin)) {
+      console.log('✅ Origin allowed:', origin);
       callback(null, true);
     } 
     // GitHub Pages 도메인 체크 (aebonlee.github.io 및 서브 경로)
     else if (origin && origin.includes('aebonlee.github.io')) {
+      console.log('✅ GitHub Pages origin allowed:', origin);
       callback(null, true);
     }
     else {
@@ -36,7 +39,9 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json({ limit: '10mb' }));
