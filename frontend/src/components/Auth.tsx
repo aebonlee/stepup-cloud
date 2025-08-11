@@ -12,6 +12,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     password: ''
   });
   const [error, setError] = useState('');
+  // Cache busting comment to force new build
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
