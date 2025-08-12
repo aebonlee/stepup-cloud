@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API 기본 URL 설정 - Render 전용
-// 버전 0.1.6 - Railway URL 완전 제거 및 클린 빌드
+// 버전 0.1.7 - Railway URL 완전 제거 최종 확인 - 2025-01-12
 const API_BASE_URL = process.env.REACT_APP_API_URL || 
   (process.env.NODE_ENV === 'production' 
     ? 'https://stepup-cloud-uh79.onrender.com'
@@ -10,7 +10,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL ||
 // Axios 인스턴스 생성
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 15000, // 15초 타임아웃
+  timeout: 20000, // 20초 타임아웃
   headers: {
     'Content-Type': 'application/json',
   },
