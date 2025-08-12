@@ -220,7 +220,7 @@ npm start
 이 프로젝트는 GitHub Actions를 통해 프론트엔드와 백엔드를 각각 자동 배포합니다:
 
 - **프론트엔드**: GitHub Pages (https://aebonlee.github.io/stepup-cloud)
-- **백엔드**: Railway (https://stepup-cloud-backend.up.railway.app)
+- **백엔드**: Railway (https://stepup-cloud-uh79.onrender.com)
 
 #### 배포 과정:
 1. `main` 브랜치에 푸시하면 자동으로 배포 시작
