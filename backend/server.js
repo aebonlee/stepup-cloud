@@ -8,16 +8,13 @@ const app = express();
 const PORT = process.env.PORT || 5003;
 const JWT_SECRET = process.env.JWT_SECRET || 'stepup-cloud-secret-key-2024';
 
-// CORS 설정을 더 구체적으로
+// CORS 설정 - Render 전용
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001', 
   'http://localhost:3002',
   'http://localhost:3003',
   'https://aebonlee.github.io',
-  'https://stepup-cloud-backend.onrender.com',
-  'https://stepup-cloud-uh79.onrender.com',
-  'https://stepup-cloud-backend.up.railway.app',
   process.env.FRONTEND_URL || 'https://aebonlee.github.io'
 ];
 
@@ -46,14 +43,7 @@ app.use(cors({
       return;
     }
     
-    // Railway 도메인 체크 (*.up.railway.app)
-    if (origin.includes('.up.railway.app')) {
-      console.log('✅ Railway domain allowed:', origin);
-      callback(null, true);
-      return;
-    }
-    
-    // Render 도메인 체크 (*.onrender.com)
+    // Render 도메인 체크 (*.onrender.com) - Render 전용
     if (origin.includes('.onrender.com')) {
       console.log('✅ Render domain allowed:', origin);
       callback(null, true);
