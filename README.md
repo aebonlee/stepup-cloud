@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18-green.svg)](https://nodejs.org/)
 
-학생의 학습 루틴, 독서, 활동 등의 데이터를 기록·시각화하여, 학부모와 함께 자기주도 학습의 방향을 설계하고 성장을 지원하는 협력형 학습관리 서비스입니다.
+학생의 학습 루틴, 독서, 활동 등의 데이터를 기록·시각화하여, 학부모와 함께 자기주도 학습의 방향을 설계하고 성장을 지원하는 협력형 학습관리 서비스입니다. (Backend : https://dashboard.render.com/)
 
 🌐 **[라이브 데모 보기](https://aebonlee.github.io/stepup-cloud)**
 
@@ -39,29 +39,29 @@
 
 ```
 stepup-cloud/
-├── 📁 frontend/                 # React 프론트엔드
-│   ├── 📁 public/              # 정적 파일
+├── 📁 frontend/                           # React 프론트엔드
+│   ├── 📁 public/                         # 정적 파일
 │   ├── 📁 src/
-│   │   ├── 📁 components/      # 재사용 가능한 컴포넌트
-│   │   │   ├── Auth.tsx        # 로그인/회원가입 컴포넌트
-│   │   │   └── Navigation.tsx  # 네비게이션 바
-│   │   ├── 📁 pages/           # 페이지 컴포넌트
-│   │   │   ├── StudyPage.tsx   # 학습 기록 페이지
-│   │   │   ├── ReadingPage.tsx # 독서 기록 페이지
-│   │   │   ├── ActivitiesPage.tsx # 활동/입상 페이지
-│   │   │   └── DashboardPage.tsx # 종합 대시보드
-│   │   ├── App.tsx             # 메인 앱 컴포넌트
-│   │   └── index.tsx           # 앱 진입점
+│   │   ├── 📁 components/                  # 재사용 가능한 컴포넌트
+│   │   │   ├── Auth.tsx                     # 로그인/회원가입 컴포넌트
+│   │   │   └── Navigation.tsx               # 네비게이션 바
+│   │   ├── 📁 pages/                       # 페이지 컴포넌트
+│   │   │   ├── StudyPage.tsx                # 학습 기록 페이지
+│   │   │   ├── ReadingPage.tsx              # 독서 기록 페이지
+│   │   │   ├── ActivitiesPage.tsx           # 활동/입상 페이지
+│   │   │   └── DashboardPage.tsx            # 종합 대시보드
+│   │   ├── App.tsx                          # 메인 앱 컴포넌트
+│   │   └── index.tsx                        # 앱 진입점
 │   ├── package.json
-│   ├── tailwind.config.js      # Tailwind CSS 설정
-│   └── craco.config.js         # CRACO 설정
-├── 📁 backend/                 # Node.js 백엔드
-│   ├── server.js               # Express 서버
+│   ├── tailwind.config.js                   # Tailwind CSS 설정
+│   └── craco.config.js                      # CRACO 설정
+├── 📁 backend/                             # Node.js 백엔드
+│   ├── server.js                            # Express 서버
 │   ├── package.json
-│   └── stepup_cloud.db         # SQLite 데이터베이스
+│   └── stepup_cloud.db                      # SQLite 데이터베이스
 ├── 📁 .github/
 │   └── 📁 workflows/
-│       └── deploy.yml          # GitHub Actions 워크플로우
+│       └── deploy.yml                       # GitHub Actions 워크플로우
 ├── .gitignore
 └── README.md
 ```
@@ -117,6 +117,18 @@ npm start
 
 프론트엔드는 `http://localhost:3000`에서 실행됩니다.
 
+  📱 프론트페이지 테스트 방법:
+
+  1. 사이트 접속: https://aebonlee.github.io/stepup-cloud (약 2-3분 후 배포 완료)
+  2. 임시 로그인 계정:
+    - 이메일: test@sample.com
+    - 비밀번호: 1234
+  3. 내부 페이지 기능:
+    - 📚 학습 기록 페이지
+    - 📖 독서 기록 페이지
+    - 🏆 입상/활동 기록 페이지
+    - 📊 통계 및 차트 페이지
+
 ## 📱 사용법
 
 ### 1. 회원가입 및 로그인
@@ -157,6 +169,37 @@ npm start
 ### awards_activities
 - 입상/활동 기록 (날짜, 제목, 유형, 과목, 시간)
 
+ ## 🆓 무료 백엔드 서비스 옵션
+
+ ** 1. Render (추천)** ⭐
+
+  - 무료 플랜: 750시간/월 (충분함)
+  - 데이터베이스: PostgreSQL 무료 제공
+  - 장점: 쉬운 설정, 자동 배포, SSL 지원
+  - 단점: Cold start 지연
+
+ ** 2. Railway**
+
+  - 무료 플랜: $5 크레딧/월
+  - 데이터베이스: PostgreSQL, MySQL 지원
+  - 장점: 빠른 성능, 좋은 DX
+
+  **3. Vercel + PlanetScale**
+
+  - Vercel: 서버리스 함수 무료
+  - PlanetScale: MySQL 호환 무료 DB
+  - 장점: 글로벌 CDN, 빠른 성능
+
+ ** 4. Supabase (추천) ⭐⭐
+**
+  - 무료 플랜: PostgreSQL + API + Auth
+  - 장점: 완전한 BaaS, 실시간 기능
+  - 특징: Firebase 대안, RESTful API 자동 생성
+
+  Render를 사용해서 백엔드를 배포하고 PostgreSQL 연동하겠습니다!
+  
+  ---
+
 ## 🎨 디자인 특징
 
 - **파스텔톤 컬러**: 아이보리, 하늘, 민트 등 따뜻하고 안정적인 색상
@@ -172,31 +215,31 @@ npm start
 
 ## 🚀 배포
 
-### GitHub Pages 자동 배포
+### 자동 배포 시스템
 
-이 프로젝트는 GitHub Actions를 통해 자동으로 GitHub Pages에 배포됩니다.
+이 프로젝트는 GitHub Actions를 통해 프론트엔드와 백엔드를 각각 자동 배포합니다:
 
-1. **GitHub 저장소 생성**
-```bash
-# 로컬 저장소에서 GitHub에 푸시
-git add .
-git commit -m "Initial commit: StepUp Cloud 학습관리 서비스"
-git branch -M main
-git remote add origin https://github.com/aebonlee/stepup-cloud.git
-git push -u origin main
-```
+- **프론트엔드**: GitHub Pages (https://aebonlee.github.io/stepup-cloud)
+- **백엔드**: Railway (https://stepup-cloud-backend.up.railway.app)
 
-2. **GitHub Pages 설정**
-- GitHub 저장소 → Settings → Pages
+#### 배포 과정:
+1. `main` 브랜치에 푸시하면 자동으로 배포 시작
+2. 프론트엔드는 GitHub Pages에 배포
+3. 백엔드는 Railway에 배포
+4. API 연동은 자동으로 프로덕션 URL로 설정
+
+#### Railway 백엔드 설정:
+1. Railway 계정 생성 (https://railway.app)
+2. GitHub 저장소 연결
+3. 환경변수 설정:
+   - `JWT_SECRET`: 강력한 비밀 키
+   - `NODE_ENV`: production
+4. 자동 배포 활성화
+
+#### GitHub Pages 설정:
+- Repository → Settings → Pages
 - Source: "GitHub Actions" 선택
-- `main` 브랜치에 푸시하면 자동 배포
-
-3. **수동 배포 (선택사항)**
-```bash
-# 프론트엔드만 GitHub Pages에 배포
-cd frontend
-npm run deploy
-```
+- Custom domain: aebonlee.github.io (자동 설정됨)
 
 ### 로컬 프로덕션 빌드
 
@@ -223,8 +266,8 @@ DB_PATH=./stepup_cloud.db
 ## 📞 지원
 
 문의사항이 있으시면 다음으로 연락해주세요:
-- 이메일: support@stepupcloud.com
-- 웹사이트: https://stepupcloud.com
+- 이메일: aebon@naver.com
+- 웹사이트: https://aebonlee.github.io/stepup-cloud/
 
 ## 📄 라이센스
 

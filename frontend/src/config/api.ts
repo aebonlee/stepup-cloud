@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 // API 기본 URL 설정
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://your-backend-url.com' // 프로덕션에서는 실제 백엔드 URL로 변경
-  : 'http://localhost:5002';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? 'https://stepup-cloud-uh79.onrender.com'
+    : 'http://localhost:5002');
 
 // Axios 인스턴스 생성
 export const api = axios.create({

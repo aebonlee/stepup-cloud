@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: stepup-cloud-backend
+    runtime: node
+    plan: free
+    region: oregon  # 더 안정적인 리전 선택
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    healthCheckPath: /api/health
+    autoDeploy: true  # GitHub 푸시 시 자동 배포
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        value: stepup-cloud-super-secret-jwt-key-2024-very-long-random-string-for-security
+      - key: DATABASE_URL
+        fromDatabase:
+          name: stepup-cloud-db
+          property: connectionString
+
+databases:
+  - name: stepup-cloud-db
+    databaseName: stepup_cloud
+    plan: free
+    region: oregon

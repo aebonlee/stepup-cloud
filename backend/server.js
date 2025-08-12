@@ -1,27 +1,48 @@
 const express = require('express');
 const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const path = require('path');
+const { db, initializeDatabase } = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 5003;
 const JWT_SECRET = process.env.JWT_SECRET || 'stepup-cloud-secret-key-2024';
 
 // CORS 설정을 더 구체적으로
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001', 
+  'http://localhost:3002',
+  'http://localhost:3003',
+  'https://aebonlee.github.io',
+  'https://stepup-cloud-backend.onrender.com',
+  'https://stepup-cloud-uh79.onrender.com',
+  process.env.FRONTEND_URL || 'https://aebonlee.github.io'
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000', 
-    'http://localhost:3001', 
-    'http://localhost:3002', 
-    'http://localhost:3003', 
-    'https://aebonlee.github.io',
-    process.env.FRONTEND_URL || 'https://aebonlee.github.io'
-  ],
+  origin: function(origin, callback) {
+    console.log('🔍 Incoming request from origin:', origin);
+    // 개발 환경이나 허용된 도메인인 경우 허용
+    if (!origin || allowedOrigins.includes(origin)) {
+      console.log('✅ Origin allowed:', origin);
+      callback(null, true);
+    } 
+    // GitHub Pages 도메인 체크 (aebonlee.github.io 및 서브 경로)
+    else if (origin && origin.includes('aebonlee.github.io')) {
+      console.log('✅ GitHub Pages origin allowed:', origin);
+      callback(null, true);
+    }
+    else {
+      console.log('🚫 CORS blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json({ limit: '10mb' }));
@@ -32,59 +53,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// 데이터베이스 연결 (Render에서도 작동하도록 절대 경로 사용)
-const dbPath = process.env.DATABASE_URL || path.join(__dirname, 'stepup_cloud.db');
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('데이터베이스 연결 오류:', err.message);
-    process.exit(1);
-  }
-  console.log('SQLite 데이터베이스에 연결되었습니다.');
-  console.log('데이터베이스 경로:', dbPath);
-});
-
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )`);
-
-  db.run(`CREATE TABLE IF NOT EXISTS study_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    date TEXT NOT NULL,
-    subject TEXT NOT NULL,
-    book TEXT,
-    minutes INTEGER NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-  )`);
-
-  db.run(`CREATE TABLE IF NOT EXISTS reading_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    date TEXT NOT NULL,
-    book_title TEXT NOT NULL,
-    review TEXT,
-    category TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-  )`);
-
-  db.run(`CREATE TABLE IF NOT EXISTS awards_activities (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    date TEXT NOT NULL,
-    title TEXT NOT NULL,
-    type TEXT NOT NULL,
-    subject TEXT,
-    hours INTEGER,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-  )`);
-});
+// 데이터베이스 초기화
+initializeDatabase();
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -325,7 +295,7 @@ process.on('SIGINT', () => {
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 스텝업클라우드 API 서버가 포트 ${PORT}에서 실행 중입니다.`);
   console.log(`📊 헬스 체크: http://localhost:${PORT}/api/health`);
-  console.log(`🗄️  데이터베이스: ${dbPath}`);
+  console.log(`🗄️  데이터베이스: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'} 연결됨`);
   console.log(`🌍 환경: ${process.env.NODE_ENV || 'development'}`);
 });
 

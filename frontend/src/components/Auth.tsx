@@ -12,6 +12,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     password: ''
   });
   const [error, setError] = useState('');
+  // Cache busting comment to force new build
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -23,6 +24,16 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    // 임시 테스트 계정 처리
+    if (formData.email === 'test@sample.com' && formData.password === '1234') {
+      const mockToken = 'test-token-123456789';
+      const mockUser = { id: 1, email: 'test@sample.com' };
+      
+      localStorage.setItem('token', mockToken);
+      onLogin(mockToken, mockUser);
+      return;
+    }
 
     // 입력 검증
     if (!formData.email || !formData.password) {
@@ -49,9 +60,9 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     } catch (error: any) {
       console.error('Auth error:', error);
       if (error.code === 'ECONNREFUSED') {
-        setError('서버에 연결할 수 없습니다. 백엔드 서버가 실행 중인지 확인해주세요.');
+        setError('서버에 연결할 수 없습니다. 임시 테스트는 test@sample.com / 1234 로 로그인해보세요.');
       } else {
-        setError(error.response?.data?.error || '오류가 발생했습니다.');
+        setError(error.response?.data?.error || '오류가 발생했습니다. 임시 테스트는 test@sample.com / 1234 로 로그인해보세요.');
       }
     }
   };
@@ -90,6 +101,16 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
             <li className="flex items-center"><span className="text-sky-pastel-500 mr-2">✓</span>과목별 학습 시간 기록 및 시각화</li>
             <li className="flex items-center"><span className="text-mint-pastel-500 mr-2">✓</span>독서 및 활동 기록</li>
           </ul>
+          
+          <div className="mt-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
+            <p className="text-sm text-amber-700 font-medium flex items-center">
+              <span className="mr-2">🔐</span>임시 테스트 계정
+            </p>
+            <p className="text-sm text-amber-600 mt-1">
+              이메일: <code className="bg-amber-100 px-1 rounded">test@sample.com</code><br />
+              비밀번호: <code className="bg-amber-100 px-1 rounded">1234</code>
+            </p>
+          </div>
         </div>
 
         <div className="flex mb-6 bg-gray-100 p-1 rounded-xl">
@@ -133,6 +154,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
               value={formData.email}
               onChange={handleChange}
               required
+              autoComplete="email"
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-pastel-400 focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white"
               placeholder="이메일을 입력하세요"
             />
@@ -149,6 +171,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
               value={formData.password}
               onChange={handleChange}
               required
+              autoComplete={isLogin ? "current-password" : "new-password"}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-pastel-400 focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white"
               placeholder="비밀번호를 입력하세요"
             />
