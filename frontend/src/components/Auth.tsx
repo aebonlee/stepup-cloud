@@ -12,7 +12,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     password: ''
   });
   const [error, setError] = useState('');
-  // Cache busting comment to force new build
+  // 타임스탬프 강제 업데이트 - 2025.01.12 16:30
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
