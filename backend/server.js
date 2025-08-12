@@ -6,12 +6,19 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 5003;
 const JWT_SECRET = process.env.JWT_SECRET || 'stepup-cloud-secret-key-2024';
 
 // CORS 설정을 더 구체적으로
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'https://aebonlee.github.io'],
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:3001', 
+    'http://localhost:3002', 
+    'http://localhost:3003', 
+    'https://aebonlee.github.io',
+    process.env.FRONTEND_URL || 'https://aebonlee.github.io'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -25,14 +32,15 @@ app.use((req, res, next) => {
   next();
 });
 
-// 데이터베이스 연결
-const dbPath = path.join(__dirname, 'stepup_cloud.db');
+// 데이터베이스 연결 (Render에서도 작동하도록 절대 경로 사용)
+const dbPath = process.env.DATABASE_URL || path.join(__dirname, 'stepup_cloud.db');
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('데이터베이스 연결 오류:', err.message);
     process.exit(1);
   }
   console.log('SQLite 데이터베이스에 연결되었습니다.');
+  console.log('데이터베이스 경로:', dbPath);
 });
 
 db.serialize(() => {
@@ -314,10 +322,11 @@ process.on('SIGINT', () => {
   });
 });
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 스텝업클라우드 API 서버가 포트 ${PORT}에서 실행 중입니다.`);
   console.log(`📊 헬스 체크: http://localhost:${PORT}/api/health`);
   console.log(`🗄️  데이터베이스: ${dbPath}`);
+  console.log(`🌍 환경: ${process.env.NODE_ENV || 'development'}`);
 });
 
 server.on('error', (err) => {
