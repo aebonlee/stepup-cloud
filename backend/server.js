@@ -17,26 +17,58 @@ const allowedOrigins = [
   'https://aebonlee.github.io',
   'https://stepup-cloud-backend.onrender.com',
   'https://stepup-cloud-uh79.onrender.com',
+  'https://stepup-cloud-backend.up.railway.app',
   process.env.FRONTEND_URL || 'https://aebonlee.github.io'
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
     console.log('🔍 Incoming request from origin:', origin);
-    // 개발 환경이나 허용된 도메인인 경우 허용
-    if (!origin || allowedOrigins.includes(origin)) {
-      console.log('✅ Origin allowed:', origin);
+    
+    // 개발 환경에서는 모든 origin 허용
+    if (!origin) {
+      console.log('✅ No origin (development/testing) allowed');
       callback(null, true);
-    } 
+      return;
+    }
+    
+    // 허용된 도메인 목록에 있는 경우
+    if (allowedOrigins.includes(origin)) {
+      console.log('✅ Origin in allowed list:', origin);
+      callback(null, true);
+      return;
+    }
+    
     // GitHub Pages 도메인 체크 (aebonlee.github.io 및 서브 경로)
-    else if (origin && origin.includes('aebonlee.github.io')) {
+    if (origin.includes('aebonlee.github.io')) {
       console.log('✅ GitHub Pages origin allowed:', origin);
       callback(null, true);
+      return;
     }
-    else {
-      console.log('🚫 CORS blocked origin:', origin);
-      callback(new Error('Not allowed by CORS'));
+    
+    // Railway 도메인 체크 (*.up.railway.app)
+    if (origin.includes('.up.railway.app')) {
+      console.log('✅ Railway domain allowed:', origin);
+      callback(null, true);
+      return;
     }
+    
+    // Render 도메인 체크 (*.onrender.com)
+    if (origin.includes('.onrender.com')) {
+      console.log('✅ Render domain allowed:', origin);
+      callback(null, true);
+      return;
+    }
+    
+    // localhost 개발 환경 체크
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      console.log('✅ Localhost development allowed:', origin);
+      callback(null, true);
+      return;
+    }
+    
+    console.log('🚫 CORS blocked origin:', origin);
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
