@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// API 기본 URL 설정 - Render 전용 (Railway 완전 제거)
-// 버전 0.1.3 - Railway URL 완전 제거됨
+// API 기본 URL 설정 - Render 전용
+// 버전 0.1.4 - 오프라인 테스트 로그인 기능 추가
 const API_BASE_URL = process.env.REACT_APP_API_URL || 
   (process.env.NODE_ENV === 'production' 
     ? 'https://stepup-cloud-uh79.onrender.com'

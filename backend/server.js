@@ -8,7 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 5003;
 const JWT_SECRET = process.env.JWT_SECRET || 'stepup-cloud-secret-key-2024';
 
-// CORS 설정 - Render 전용
+// CORS 설정 - Render 전용 백엔드 서비스
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001', 
