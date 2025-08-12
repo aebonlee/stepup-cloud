@@ -1,4 +1,4 @@
-name: Deploy Frontend to GitHub Pages and Backend to Railway
+name: Deploy Frontend to GitHub Pages and Backend to Render
 
 on:
   push:
